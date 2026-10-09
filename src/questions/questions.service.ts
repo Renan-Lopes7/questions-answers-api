@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
@@ -67,8 +68,8 @@ export class QuestionsService {
     return result;
   }
 
-  findOne(id: number) {
-    return this.prismaService.questions.findUnique({
+  async findOne(id: number) {
+    const findQuestion = await this.prismaService.questions.findUnique({
       where: { id },
       include: {
         user: {
@@ -83,6 +84,8 @@ export class QuestionsService {
         },
       },
     });
+    if (!findQuestion) throw new NotFoundException('Question not found');
+    return findQuestion;
   }
 
   async update(
@@ -94,8 +97,7 @@ export class QuestionsService {
       where: { id },
     });
 
-    if (!questionExist)
-      throw new BadRequestException('This question not exist');
+    if (!questionExist) throw new NotFoundException('This question not exist');
 
     if (questionExist.userId !== requestId)
       throw new ForbiddenException('You can only edit your own question');
@@ -111,12 +113,17 @@ export class QuestionsService {
   }
 
   async remove(id: number, requestId: number) {
-    const question = await this.prismaService.questions.delete({
+    const findQuestion = await this.prismaService.questions.findFirst({
       where: { id },
     });
+    if (!findQuestion) throw new NotFoundException('Question not found');
 
-    if (question.userId !== requestId)
+    if (findQuestion.userId !== requestId)
       throw new ForbiddenException('You can only remove your own question');
+
+    await this.prismaService.questions.delete({
+      where: { id },
+    });
 
     await this.invalidateQuestionsCache();
 
