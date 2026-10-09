@@ -85,6 +85,7 @@ export class QuestionsService {
       },
     });
     if (!findQuestion) throw new NotFoundException('Question not found');
+
     return findQuestion;
   }
 
