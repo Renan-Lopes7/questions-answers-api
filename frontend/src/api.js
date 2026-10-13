@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function getToken() {
   return localStorage.getItem('token');
@@ -30,20 +30,28 @@ async function request(path, { method = 'GET', body, auth = false } = {}) {
 }
 
 export const api = {
-  signin: (credentials) => request('/auth/signin', { method: 'POST', body: credentials }),
+  signin: (credentials) =>
+    request('/auth/signin', { method: 'POST', body: credentials }),
   signup: (user) => request('/user/signup', { method: 'POST', body: user }),
 
   getQuestions: (page = 1, limit = 10) =>
     request(`/questions?page=${page}&limit=${limit}`),
   getQuestion: (id) => request(`/questions/${id}`),
-  createQuestion: (dto) => request('/questions', { method: 'POST', body: dto, auth: true }),
+  createQuestion: (dto) =>
+    request('/questions', { method: 'POST', body: dto, auth: true }),
   updateQuestion: (id, dto) =>
     request(`/questions/${id}`, { method: 'PATCH', body: dto, auth: true }),
-  deleteQuestion: (id) => request(`/questions/${id}`, { method: 'DELETE', auth: true }),
+  deleteQuestion: (id) =>
+    request(`/questions/${id}`, { method: 'DELETE', auth: true }),
 
   createAnswer: (questionId, dto) =>
-    request(`/answers/${questionId}`, { method: 'POST', body: dto, auth: true }),
+    request(`/answers/${questionId}`, {
+      method: 'POST',
+      body: dto,
+      auth: true,
+    }),
   updateAnswer: (id, dto) =>
     request(`/answers/${id}`, { method: 'PATCH', body: dto, auth: true }),
-  deleteAnswer: (id) => request(`/answers/${id}`, { method: 'DELETE', auth: true }),
+  deleteAnswer: (id) =>
+    request(`/answers/${id}`, { method: 'DELETE', auth: true }),
 };
