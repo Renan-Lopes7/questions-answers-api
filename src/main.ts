@@ -16,7 +16,10 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: [
+      'http://localhost:5173',
+      'https://questions-answers-api-1.onrender.com',
+    ],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     credentials: true,
   });
