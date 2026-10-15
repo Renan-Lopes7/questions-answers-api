@@ -8,6 +8,7 @@ import { UserModule } from '../user/user.module';
 import { QuestionsModule } from '../questions/questions.module';
 import { AnswersModule } from '../answers/answers.module';
 import { RedisModule } from '../redis/redis.module';
+import { HealthModule } from '../health/health.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -19,6 +20,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     QuestionsModule,
     AnswersModule,
     RedisModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
