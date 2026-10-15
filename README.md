@@ -139,6 +139,4 @@ Acesse em `http://localhost:5173`. Certifique-se de que o backend está rodando 
 - [x] Testes unitários (Jest)
 - [x] Frontend de apoio em React
 - [x] Deploy (Render + Aiven)
-- [ ] Testes e2e
-- [ ] Rate limiting no login
 
